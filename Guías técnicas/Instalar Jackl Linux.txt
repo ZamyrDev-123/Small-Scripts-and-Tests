@@ -1,0 +1,41 @@
+# Guia par aYoutube: ZamyrLinuxGames
+
+1. Instalar:
+jackd jackd2 qjackctl
+
+Opcionales (pavucontrol para configurar entrada y salida de audio):
+pavucontrol qasmixer
+
+2. Añádete al grupo 'audio' para que jack tenga real-time-priority
+sudo usermod -a -G audio $(whoami)
+
+Y añade:
+@audio - rtprio 95 # or 99 (caution!)
+@audio - memlock unlimited
+
+En /etc/security/limits.conf (con sudo, claro)
+
+3. Abre QjackCtl, ve a Setup/Configuración, en la opción 'Interfaz' selecciona tu tarjeta de sonido ("hw:0" por defecto, pero en mi caso era la salida de HDMI así que tuve que cambiarlo a "hw:Generic,0" para que agarre el audio interno 'Generic' y la entrada de microfono '0').
+
+Asegurate que en la opción 'Driver' este seleccionado 'alsa' y la casilla 'Tiempo Real' este desmarcada.
+
+Ve luego al apartado en la parte superior llamado 'Opciones' y marca las casillas:
+
+ "Script a ejecutar al iniciar el servidor" ó "Script to run when starting the server",
+ "Script a ejecutar luego de iniciar" ó "Script to run after starting"
+ "Script a ejecutar luego de terminar" ó "Script to run after finishing."
+
+Y en ese mismo orden le agregas a cada opción:
+
+ pulseaudio -k
+ sleep 2; pactl load-module module-jack-sink; pactl load-module module-jack-source
+ sleep 2; /usr/bin/pulseaudio --start
+
+Guarda los cambios, esto lo que hace es darle paso a Jack para utilizar la terjeta de sonido que esta usando Pulseaudio, ya que lo reinicia dandole chance a Jack a conectarse y luego al finalizar vuelve a iniciar Pulseaudio.
+Algo curioso que pasa es que al hacer 'pulseaduo -k' este se reinicia (en mi sistema), pero pulseaudio '--start' no está de más, y 'sleep 2' le da tiempo a que todo esto ocurra sin chocar entre sí.
+
+4. Reinicia tu sistema.
+Para usar las aplicaciones que requieran Jack, debes abrir QjackCtl y hacer click en 'Iniciar' antes de iniciar algun programa, gracias a 'pulseaudio-modulo-jack' no deberían haber errores.
+Asegurate de elegir correctamente la interfaz de audio para no tener problemas.
+
+Ante cualquier error, copiar toda la salida del Log y pegar en Google o tu IA de confianza (si es Google solo el erro y añades 'qjackctl' al final, y si es IA especificar lo que tratabas de hacer y preguntar como solucionarlo).
