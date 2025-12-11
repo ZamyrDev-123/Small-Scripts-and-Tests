@@ -1,9 +1,9 @@
 #!/bin/bash
 # Created by ZamyrDev for Termux (Android)
 
-# Paste the following texto in the $PREFIX/etc/bash.bashrc
+# Paste the following text in the $PREFIX/etc/bash.bashrc
 # or type:
-#    echo '[Paste texto here]' >> $PATH/etc/bash.bashrc
+#    echo '[Paste text here]' >> $PATH/etc/bash.bashrc
 
 echo -e "\n"
 echo 'bash.bashrc on $PREFIX/etc/bash.bashrc'

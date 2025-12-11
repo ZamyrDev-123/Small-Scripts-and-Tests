@@ -1,0 +1,74 @@
+
+Última Edición: 21/06/2025
+
+ ###########################################
+#                                            #
+#  ▄▖▖▖▄▖▄▖▄▖▖  ▖        ▐▘▘        ▗ ▘      #
+#  ▌ ▌▌▚ ▐ ▌▌▛▖▞▌  ▛▘▛▌▛▌▜▘▌▛▌▌▌▛▘▀▌▜▘▌▛▌▛▌  #
+#  ▙▖▙▌▄▌▐ ▙▌▌▝ ▌  ▙▖▙▌▌▌▐ ▌▙▌▙▌▌ █▌▐▖▌▙▌▌▌  #
+#          by ZamyrDev      ▄▌               #
+#                                            #
+ ###########################################
+
+
+            ## Paths ##
+
+#export PATH="/usr/local/bin:$PATH"
+#export PATH=$PATH:/home/zamir/.local/bin
+#export PATH="$PATH:/usr/bin/"
+export PATH="$PATH:/usr/sbin/"
+
+# Podria anular utilidades de /usr/bin:
+#export PATH=$PATH:/usr/bin/:$PATH
+
+
+                    ### ASCII User Custom ####
+
+echo ""
+echo " ▒███████▒ ▄▄▄       ▄████▄   ██ ▄█▀ ██▓ █    ██   ██████ "
+echo " ▒ ▒ ▒ ▄▀░▒████▄    ▒██▀ ▀█   ██▄█▒ ▓██▒ ██  ▓██▒▒██    ▒ "
+echo " ░ ▒ ▄▀▒░ ▒██  ▀█▄  ▒▓█    ▄ ▓███▄░ ▒██▒▓██  ▒██░░ ▓██▄   "
+echo "   ▄▀▒   ░░██▄▄▄▄██ ▒▓▓▄ ▄██▒▓██ █▄ ░██░▓▓█  ░██░  ▒   ██▒"
+echo " ▒███████▒ ▓█   ▓██▒▒ ▓███▀ ░▒██▒ █▄░██░▒▒█████▓ ▒██████▒▒"
+echo " ░▒▒ ▓░▒░▒ ▒▒   ▓▒█░░ ░▒ ▒  ░▒ ▒▒ ▓▒░▓  ░▒▓▒ ▒ ▒ ▒ ▒▓▒ ▒ ░"
+echo " ░░▒ ▒ ░ ▒  ▒   ▒▒ ░  ░  ▒   ░ ░▒ ▒░ ▒ ░░░▒░ ░ ░ ░ ░▒  ░ ░"
+echo " ░ ░ ░ ░ ░  ░   ▒   ░        ░ ░░ ░  ▒ ░ ░░░ ░ ░ ░  ░  ░  "
+echo "   ░ ░          ░  ░░ ░      ░  ░    ░     ░           ░  "
+echo " ░                  ░                                     "
+echo ""
+day="$(date +%A)"
+echo -n "${day^}"
+date +" - %d de %B, %Y"
+echo -e 'Show Custom packages with "showp" command\n'
+
+#--------------------------------------------------------------#
+
+# Created by `pipx` on 2024-09-11 00:50:08
+export PATH="$PATH:/home/zamir/.local/bin"
+
+## pip in venv adaptation by ZamyrDev
+## 19/12/2024 Jueves 8:20pm
+
+# listo
+# sudo apt install -y python3 python3-venv python3-full
+
+# opcional
+# sudo apt install -y python-is-python3
+# ó
+# sudo update-alternatives /usr/bin/python3 /usr/bin/python 10
+
+# crear env
+# python3 -m venv ~/.venv
+
+## USAR 'pyv' comando para:
+
+# Instalar un paquete
+#pip install numpy
+
+# Ejecutar un comando dentro del entorno virtual
+#python -c "import numpy; print(numpy.__version__)"
+
+#--------------------------------------------------------------#
+
+# Cargar Alias y Funciones personalizadas
+source ~/.custom_shell

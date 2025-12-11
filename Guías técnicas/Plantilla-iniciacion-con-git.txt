@@ -1,0 +1,69 @@
+## Creado y al día de 08/12/2025 ##
+
+Creas un nuevo repo en GitHub, luego inicias uno local en tu maquina dentro de una carpeta con el mismo nombre del creado online.
+
+cd nuevo-repo-ejemplo/
+git init
+git status
+git add . # carga todo, o puedes especificar el archivo/s
+git commit -m "Se agrega el proyecto" # dejas un comentario y luego se confirma el guardado
+
+OJO: yo ya tengo configurado el usuario y su correo del git que está en otro archivo guía creado por mí, pero igual por si acaso, es útil especificarlo.
+
+# Si no tienes configurado el usuario en git
+git config --global user.email tuemail123@gmail.com
+git config --global user.name tunombredeusuario
+
+A este punto aún sigue el repositorio a nivel de la maquina local.
+(esto de main/master se refiere a que el repositorio clonado-descargado/local, tiene una sola rama a nivel local "main"/"master")
+("-M" forza el renombrar la rama aunque exista un conflicto o ya tenga un nombre antiguo)
+
+git branch -M main # ó master
+# Así se indica que se va a subir a la rama principal
+
+Y ahora, podemos proceder a subirlo al repositorio en la nube. Para esto, utiliza el enlace al repositorio que proporcionó GitHub tras crear el repo online.
+
+# Se vincula con el repo remoto
+git remote add origin https://github.com/TuUsuario/Repositorio-ejemplo.git # este para HTTPS
+git push -u origin main # ó master (si lo colocaste así) # se sube finalmente
+
+Con este último comando, se envían los cambios de la rama local (main) al repositorio remoto (origin) y configurándo la rama como la "rama ascendente" ("-u" ó "--set-upstream", upstream) para tu rama actual. Luego de utilizar la flag "-u", tan solo con 'git push' ya sabe a donde enviar los futuros cambios.
+
+OJO: si te sale un error como:
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Autenticación falló para ...
+
+Y te aseguraste de que los tokes o contraseñas utilizadas sean correctas, entonces te toca crear un token clásico y configurarlo desde GitHub:
+Ve a configuración (Settings), Developer Settings, Personal access tokens -> Tokens (classic), y das donde el botón donde dic -> Generate new token -> Generate new token (classic), lo configuras estableciendo la fecha de expiración (o directamente lo deshabilitas pero no es muy recomendado por el tema de la seguridad) junto con todo marcado (el de copilot es opcional). Lo guardas y listo. Es recomendable copiarlo y tenerlo por hay para cuando se requiera (ya que es un código generado automáticamente y es largo).
+
+¡¡¡¡Y LISTOOOO!!!!
+Ahora puedes gestionar tu repositorio localmente y subirlo a la nube de forma práctica.
+Con: git status ; git add [. ó archivo_específico] ; git git commit -m "bla bla bla..." ; git push -m origin main
+
+git status : muestra que hay de nuevo para subir, cambios no guardados.
+git add [archivo] : añade todo (.) o algun/os archivo/s en específico
+
+Extra: con el archivo .gitignore (ignorar por git) se puede especificar los tipos de archivos que no se van a subir ni mostrar en 'git status'
+Ejemplo: .gitignore < .class ; no se subirán todos lo achivos ".class"
+
+Puedes verificar los codigos realizados sobre el proyecto con 'git log'
+
+OJO: Si quieres subir archivos a otro repositorio en la nube que gestiones, debes de añadirlo:
+Comprueba que ramas tienes actualmente: git remote -v
+Puedes entonces crear otro repo en GitHub/GitLab/etc y añadirlo: git remote add origin2 [url...]
+Con 'origin2' como el segundo, ya podrías: git add . ; git commit -m "..."
+Y ya para subir contenido especifíca la nueva rama remota: git push -u origin2 main # ó master si es tu rama principal.
+
+Verifica si estás trabajando con la rama principa, si lo requieres, cámbiate:
+git status ; git checkout main # ó master
+
+Si es la primera vez que subes cambios a una rama recién creada, Git te pedirá que configures la rama ascendente (upstream):
+git push --set-upstream origin nombre-de-tu-rama
+
+(Comprueba en que rama estas con 'git status' o 'git branch')
+
+SI ya existe el repo en la nube, clonalo (git clone [URL_repo]; cd repo; [modifica, añade archivos al gusto]; git add . ; git commit -m "..." ; git push origin <nombre_rama> # main/master), lo modificas al gusto y lo vuelves a subir.
+
+En resumen, debes de configurar las ramas y crear los repositorios (local y nube) si es uno nuevo,
+pero, si es uno ya existente, basta con descargarlo y luego resubirlo.
+Ojo, que para cualquier casom antes ya se tuvo que haber configurado el email y nombre de usuario en git.

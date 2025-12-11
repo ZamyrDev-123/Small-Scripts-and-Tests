@@ -1,0 +1,303 @@
+#!/bin/bash
+
+## NOTA: crear división de los que se ejecuta si es usuario normal o root
+## CREAR: apartado del comando 'showp' para mostrar alias de comandos más largos (alias seguido de la descripción y comando original)
+
+#---            ---#
+# CUSTOM ALIASES #
+#---            ---#
+
+# Comandos con otros nombres
+alias ?='tldr'
+alias youtube-dl='/home/zamir/.venv/bin/python /home/zamir/.venv/bin/yt-dlp'
+
+# Utilidades de navegazión
+alias ..='cd .. && pwd'
+alias here='cd "$(dirname "$(realpath "$0")")"'
+alias ls='ls --group-directories-first --color=auto -S -X'
+alias la='ls -A'
+alias lsa='ls -A'
+alias ll='ls -s -h'
+alias lla='ls -A -s -h'
+alias sizes='du -h --max-depth=1 . | sort -rh'
+alias cls='clear -x'
+
+# Herramientas del sistema
+alias ln='ln -iv'
+alias mkdir='mkdir -p'
+alias grep='grep --color=auto'
+alias wget='wget -c'
+alias rm='rm -i -v -r --preserve-root' # -r para recursivo y carpetas
+alias x='chmod u+x' xall='chmod +x *.sh'
+alias boostp='sudo renice -18 -p' # hacer que si da error vote un mensaje (tratar de recortar en lo posible el comando)
+alias inboostp='sudo renice 0 -p'
+# añadir algo llamado 'fls', que haga lo mismo que ls pero con find (para cosas como: find . -name *.txt -maxdepth X) viendose igual a la salida bonita de ls
+
+# Información
+alias myip='echo -e "\e[1mPublic IP:\e[0m"; curl ifconfig.me; echo ""'
+alias free='free -m' # free -b|k|m|g (bytes|kbytes...) para RAM
+alias pz='ps -axo pid,user,pri,ni,cmd'
+alias servicesctl='systemctl list-units --type=service'
+alias servicesins='systemctl list-unit-files --all'
+alias wificard='lshw -class network | grep -i -e "product" -e "network"'
+
+# Habilitar venv por alias
+alias pyv='source /home/zamir/.venv/bin/activate ; pyvinit'
+
+# Personalización
+alias custom='nano ~/.custom_shell'
+alias workspace='cd "$workspace_path"'
+
+# ¡Cuidado!
+alias sreboot='systemctl restart display-manager' # reinicia sesión
+alias preboot='systemctl --user restart plasma-plasmashell.service' # reinicia el panel
+alias kall='kill -9 -1'
+# crear automatizado (comando que guarde nombre y reemplaze a winetricks)
+# elm=$(ps aux | grep winetricks | awk '{print $2}' | head -n 1)
+# kill -9 $elm
+
+       ######
+#                  #
+  # CUSTOM PATHs #
+#                  #
+       ######
+
+# Gradle 9.0.1 for Ghidra and others
+PATH="$PATH":/opt/gradle-9.1.0/bin:/usr/local/sbin
+
+
+ ## ----          ---- ##
+#                        #
+#  FUNCTIONS | COMMANDS  #
+#                        #
+ ## ----          ---- ##
+
+# consulta que es cada cosa con: type [nombre func/alias/pck]
+function showp() {
+    echo -e '\n\e[1mPackages & Commands ZamyrDev:\e[0m\n'
+    which tldr || echo "Please intall 'tldr' package."
+    which fzf || echo "Please install 'fzf' package"
+    which inxi || echo "Please install 'inxi' package"
+    which pv || echo "Please install 'pv' package"
+    #which zenity || echo "Please install 'zenity' package"
+    #which mpg123 || echo "Please install 'mpg123 and sox' package"
+    echo '
+Use "tldr" command as "?" too
+    "mkcd", "mvcd", "lsa"/"la", "ll"/"lla",
+    "mybash", "custom", "myip", "sizes"
+    "df -h", "du -sh", "workspace",
+    "tree", "ps aux", "myip",
+    "here", "full-update",
+    "lsof -i -P -n", "ss -tuln".
+    "nc -zv localhost [port]",
+    "nl"/"wc -l/-c"/"cat -n"/"grep -c",
+    "strace", "pkill [program_name]".
+
+    in pipe 'pbcopy'/'xclip -selection clipboard'
+    in pipe 'less'/'more'
+
+    "x" as "chmod +x"
+    "xall" as "chmod +x *.sh"
+    ".." as "cd .."
+    "pz" as "ps -axo pid,user,pri,ni,cmd"
+
+Hards
+   └── "repare", "boostp", "inboostp",
+       "preboot", "kall".
+
+Debug
+   └── "mangohud", "lsof", "lld", "ldd"
+       "servicesctl", "servicesins",
+       "sudo systemctl status", "wificard".
+
+Pen-Testing
+   └── "iwconfig"/"ifconfig", "dhclient",
+       "aircra-ng" (and tools), "iw",
+       "nmap -sn [public_ip/24 or inet]",
+       "arp-scan --interface=wlp3s0 --localnet",
+       "ip route show default".
+'
+}
+
+function mybash() {
+case "$1" in
+  "--show"|"show")
+    # tambien: echo "$(realpath "$0")"
+    echo '.bashrc file in: '"$(realpath "$HOME/.bashrc")"
+    ;;
+  "--version"|"version")
+    echo '
+ #####################################################################
+#                                                                     #
+#  This command allows the edit and show the path of ".bashrc" file.  #
+#                By ZamyrDev on 26/12/2024 at 21:32.                  #
+#
+         Last update:   27/12/2024 at 11:07.                          #
+#                       31/12/2024 at 22:12.                          #
+#                                                                     #
+ #####################################################################
+'
+    ;;
+  "--help"|"help")
+    echo '
+  This command allows the edit and show the path of ".bashrc" file.
+  By ZamyrDev on 26/12/2024 at 21:32.
+
+  Estructure:
+
+    	mybash	   [nothing]       Edit the file.
+
+      	  ""     [--show/show]     Show the path.
+
+      	  ""     [--help/help]     Shows the current content.
+
+	  ""  [--version/version]  Shows the script version.
+'
+    ;;
+  *)
+    nano "$HOME/.bashrc"
+    ;;
+esac
+}
+
+function pyvinit() {
+    clear ; echo -e "
+           *  Acabas de activar el  * \n
+    Customized Python 3.x Virtual Enviroment \n
+              *  by ZamyrDev  * \n"
+}
+
+function mkcd() { mkdir "$1" && cd "$1"; }
+
+function mvcd() { mv "$1" "$2" && cd "$(dirname "$2")"; }
+
+function new() {
+    touch "$1"
+    if file "$1" | grep -q 'ASCII'; then
+        chmod +x "$1"
+    fi
+    nano "$1"
+}
+
+function repare() {
+    sudo dpkg --add-architecture i386
+    sudo apt update -y ; sudo apt upgrade -y
+    sudo apt clean ; sudo apt autoclean
+    sudo dpkg --configure -a
+    sudo apt update --fix-missing
+    sudo apt install -f
+    sudo apt --fix-broken install
+}
+
+function full-update() {
+    sudo flatpak update -y
+    sudo snap refresh
+    sudo apt -y update
+    sudo apt -y upgrade
+    sudo apt -y dist-upgrade
+    #sudo apt -y autoremove
+    sudo apt clean
+    sudo apt autoclean
+    #$HOME/.venv/bin/pip install --upgrade ...
+}
+
+# Tener cuidado
+#cat /etc/passwd && cat /etc/shadow
+# obtener las lineas donde diga root en cada archivo y copiar a un archivo pseudónimo (shadow y passwd)
+# en la misma carpeta los dos, ejecutamos:
+#unshadow passwd shadow > hash
+# con esto creamos un nuevo archivo hash y luego lo desciframos con un diccionario
+#john --wordlist=/ruta/al/diccionario/como/rockyou.txt hash
+# John the ripper
+
+# se pueden escalar privilegios (LEP) en cat agregandolo al grupo sudo por un usuario con permisos
+# añadir al /etc/group o /etc/sudoers (debajo de root)
+#test    ALL=(root) NOPASSDW: /bin/cat
+# esto se podria hacer con ayuda de un usuario con privilegios o con un archivo que se haga pasar por un programa o instalación que añada esto de forma desapercibida
+# con: echo '...' >> /etc/sudoers ó (tu mismo) cat >> /etc/sudoers (Ctrl+D para finalizar) ó con sed: sed -i '$a/frase...' /etc/sudoers
+# con sed me gusta porque es muy abierto a donde modificar, -i es para modificar el archivo original directamente, $ es la ultima linea del archivo, a\ append agregar una nueva linea despues de la linea especificada: sed -i '1s/^/frase...\n/' /etc/sudoers (lo añade a la primera linea [1] sustituyendo [s] su con tenido por la frase y luego un salto [\n]) (yo en un script encontre en el archivo de /etc/sudoers era aproximandamente la línea 52)
+# luego de recargar bash podrás acceder al comando con sudo sin contraseña jajajaj
+# sudo cat /etc/shadow
+# cuando se tenga el archivo hash, se puede hacer:
+#john hash --show
+#https://www.hackingarticles.in/linux-for-pentester-cat-privilege-escalation/
+
+# deshabilita contra sudo:
+#sudo visudo
+# añade: user ALL=(ALL) NOPASSWD: ALL
+# otra forma es en ese mismo archivo la linea Defaults (para comando especifico)
+#user ALL=(ALL) NOPASSWD: /usr/bin/command
+# otra forma es evitar la solicitud de contraseña una vez se use por primera vez, en este caso son 30 minutos, pero no estoy seguro si escala privilegios, solo le da mas tiempo al sudo (aunque podria usarlo para cuando haga el archivo malicioso)
+#Default            timestamp_timeout=30
+# lo habia hecho así: sed -i "51i "$USER"    ALL=(ALL:ALL) ALL" /etc/sudoers
+
+#talvez se podria crear un script que se aloje en el .bashrc de otro usuario con privilegios brindandole privilegios al que me interese en ese caso hipotetico (depende si desde un usuario se puede acceder sin permisos especiales al home de otro [permisos de usuarios y grupos (chmod g+u, chown)])
+#rev: find / -perm -4000 -type f -exec ls -la {} 2>/dev/null \; | more
+
+# apt install john # esto es john the ripper
+
+
+## VARIABLES DE ENTORNO ##
+#EDITOR=nano
+
+
+## DIRECTORIOS PERSONALIZADOS ##
+workspace_path='/home/zamir/Documentos/Proyectos/Programación/Bash scripts/'
+
+
+# CUSTOM PROMT # (se verifica el root con: whoami, id -u ó $EUID)
+if [ "$(whoami)" == "zamir" ]; then # ó if [ $(id -u ) -ne 0 ]; then
+  # 1
+  PS1='\[\e[38;5;48;1m\]\u\[\e[0;38;5;37m\]@\[\e[38;5;48;1m\]\h\[\e[0m\] [ \[\e[38;5;50m\]\w\[\e[0m\] ]\[\e[38;5;47m\] st: \[\e[0m\]$?\n\[\e[38;5;38m\]└───\[\e[0m\]\\$ '
+  # 2 (lo mismo pero el 'status' parpadea)
+  #PS1='\[\e[38;5;48;1m\]\u\[\e[0;38;5;37m\]@\[\e[38;5;48;1m\]\h\[\e[0m\] [ \[\e[38;5;50m\]\w\[\e[0m\] ]\[\e[38;5;47m\] st: \[\e[0;5m\]$?\n\[\e[0m\]\[\e[38;5;38m\]└───\[\e[0m\]\\$ '
+elif [ "$(whoami)" == "root" ]; then
+  # 3
+  #PS1='\[\e[38;5;48;1m\]\u\[\e[0;38;5;37m\]@\[\e[38;5;48;1m\]\h\[\e[0m\] [ \[\e[38;5;50m\]\w\[\e[0m\] ]\[\e[38;5;47m\] st: \[\e[0m\]$?\n\[\e[38;5;38m\]└\[\e[0;5m\]>\[\e[0m\] '
+  # 4 (colorized)
+  PS1='\[\e[38;5;92;1m\]\u\[\e[0;38;5;27m\]@\[\e[38;5;129;1m\]\h\[\e[0m\] [ \[\e[38;5;50m\]\w\[\e[0m\] ]\[\e[38;5;40m\] st: \[\e[0m\]$?\n\[\e[38;5;38m\]└\[\e[0;5m\]>\[\e[0m\] '
+
+  #timeout 2 cmatrix -B -u 3 -C magenta # NO APARECE EL CMATRIX
+  #bash -c 'timeout 2 cmatrix -B -u 3 -C magenta' # TAMPOCO FUNCIONA
+
+  #exec /home/zamir/gemini_progress_bar.sh
+  #sound_time=$(soxi -D /home/zamir/entrance.wav)
+  #aplay /home/zamir/entrance.wav | cmatrix -B -u 4 -C magenta # '&' lo ejecuta en segundo plano
+
+  #sound_time=$(soxi -D ~/entrance.wav)
+  #aplay ~/entrance.wav > /dev/null 2>&1 &
+
+  # forma 1
+  #timeout $(( $(printf '%.0f' $sound_time) +1 )) ~/gemini_progress_bar.sh $sound_time
+
+  # forma 2
+  #for i in $(seq 1 100); do
+  #    sleep $(echo "scale=2; ($sound_time-2) / 100" | bc)
+  #    echo $i
+  #done | whiptail --title 'Root session' --gauge 'Entering the system...' --fullbuttons 6 60 0
+
+#else
+  #original
+  #PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+  pwd
+fi
+
+#  origen
+#  ├── carpeta1
+#  │   └── waypoints.png
+#  ├── carpeta2
+#  └── carpeta3
+#      ├── carpeta4
+#      │   ├── file.cfg
+#      │   ├── file.jpg
+#      │   └── file.md2
+#      └── carpeta5
+#          ├── file.cfg
+#          ├── file.jpg
+#          └── file.md3
+
+# ⊢  ⊤  ⌐  ╯  ╰  ⌈  ⌋  ⊹
+# ⊣  ⊥  ⌙  ╮  ╭  ⌊  ⌉  ／
+
+# para arboles
+# │
